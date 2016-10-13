@@ -1,12 +1,16 @@
 package com.company;
 
+import jodd.json.JsonSerializer;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         HashMap<String, ArrayList<Person>> peopleHash = new HashMap<>();
 
         File peoplef = new File("people.csv");
@@ -29,6 +33,14 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        JsonSerializer complaintsSerializer = new JsonSerializer();
+        String jsonPeople = complaintsSerializer.deep(true).serialize(peopleHash);
+        File com = new File("people.json");
+        FileWriter comw = new FileWriter(com);
+        comw.write(jsonPeople);
+        comw.close();
+
 
         System.out.println(peopleHash);
     }
